@@ -18,25 +18,3 @@ div div ul li {
 	border: 2px solid black; 
 	margin-bottom: 20px
 }
-
-  /* Style popups for Cardiff Marker */
-.cardiffpopup {
-	text-align: center;
-}
-
-.cardiffpopup img {
-width: 100%;
-}
-
-h2 {
-color: #656560;
-font-family: Arial;
-}
-
-.leaflet-popup-close-button {
-display: none;
-}
-
-.leaflet-popup-content-wrapper {
-pointer-events: none;
-}

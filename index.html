@@ -3,7 +3,11 @@
 
 <head>
 
-<!--  -->	
+<!-- ###############################################################################################################
+							Import stylesheets and scripts and declare metadata
+<################################################################################################################ -->
+
+<!-- Ajax script -->	
 <script type="text/javascript">
 <!--
 var ajaxPath=' / ';
@@ -64,6 +68,10 @@ var ajaxPath=' / ';
 <!-- end favicon -->
 
 </head>
+
+<!-- ###############################################################################################################
+											Begin body of webpage
+<################################################################################################################ -->
 
 <!-- Format head for layout continuity -->
 <body onload="searchDefaults(); " lang="en-gb" class="core for  inter" id="cf.ac.uk">	
@@ -188,7 +196,9 @@ var ajaxPath=' / ';
 
 <!-- Insert div for map and content to reside -->
 <div id = "map" class = "map">
-	<OBJECT data = "world.html"></OBJECT>
+	<object width="100%" height="420"> 
+		<embed src="world.html" width="100%" height="420"> </embed> 
+	</object>
 </div>
 
 <!-- Left hand column -->
