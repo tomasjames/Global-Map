@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<meta charset = "UTF-8">
+
+<!-- ###############################################################################################################
+                            Cardiff University - International Relations Interactive Map
+                                    Author: Tomas James, Prof. Walter Gear
+                                      School of Physics and Astronomy
+
+        Based on examples and documentation from http://www.mapbox.com/mapbox.js/example/v1.0.0/ and http://http://www.mapbox.com/mapbox.js/api/v1.3.1/ as well as http://bl.ocks.org/ansis/raw/9368682874d9e8adda21/. Map generated using TileMill and hosted on http://www.mapbox.com
+
+                  Bugs should be reported to jamest7@cardiff.ac.uk with email heading 'Mapping Bug'
+ ################################################################################################################ -->
+
+<head>
+  <!-- Declare meta data for map to load smoothly -->  
+  <meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+
+  <!-- Import external scripts and libraries -->
+  <script src='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.js'></script>
+  <link href='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.css' rel='stylesheet' />
+  <!--[if lte IE 8]>
+    <link href='http://api.tiles.mapbox.com/mapbox.js/v1.3.1/mapbox.ie.css' rel='stylesheet' >
+  <![endif]-->
+
+  <!-- Style map using CSS -->
+  <style>
+
+    body { 
+      margin:0; 
+      padding:0;
+    }
+
+    #map { 
+      position:absolute; 
+      top:0; 
+      bottom:0; 
+      width:100%; 
+    }
+
+    </style>
+  </head>
+
+<body>
+
+  <!-- Add CSS styling to elements -->
+  <style scoped>
+  /* Style popups for Cardiff Marker */
+      .cardiffpopup {
+        text-align: center;
+      }
+
+      .cardiffpopup img {
+        width: 100%;
+      }
+
+    h2 {
+      color: #656560;
+      font-family: Arial;
+    }
+
+    .leaflet-popup-close-button {
+        display: none;
+    }
+
+    .leaflet-popup-content-wrapper {
+        pointer-events: none;
+    }
+  </style>
+
+<!-- ########################################################################################################## -->  
+  
+  <!-- Declare div as map -->
+  <div id='map'></div>
+
+  <!-- Define location of coordinates for interactive layer. Data from http://maps.worldbank.org/overlays/2712 -->
+  <script type="text/javascript" src="countryData.min.js"></script>
+
+  <!-- JavaScript implementation --> 
+  <script type='text/javascript'>
+    
+    // Import map using mapbox.js and set default location, zoom level and minimum zoom level
+    var map = L.mapbox.map('map', 'tomasjames.World', {
+      setView: ([51.487275, -3.175241], 2),
+      minZoom: 2
+    });
+
+    // Declare position of Cardiff University
+    var Cardiff = [{
+      type: 'Feature',
+      "geometry": { 
+        "type": "Point", 
+        "coordinates": [-3.175241, 51.487275]},
+      
+      "properties": {
+          "image": "universitylogo.jpg",
+          "marker-symbol": "college",
+          "marker-color": "#D4374A",
+          "university": "Cardiff University"
+      }
+    }];
+
+    // Add custom popup to marker
+    map.markerLayer.on('layeradd', function(e) {
+        var marker = e.layer,
+            feature = marker.feature;
+
+        // Create custom popup content
+        var popupContent =  '<div id="' + feature.properties.id + '" class="cardiffpopup">' +
+                            '<h2 style: "font-family:Helvetica">' + feature.properties.university + '</h2>' +
+                              '<img src="' + feature.properties.image + '">' +
+                            '</div>'
+
+        // Further popup styling using embedded Leaflet plugin
+        // http://leafletjs.com/reference.html#popup
+        marker.bindPopup(popupContent,{
+            closeButton: false,
+            minWidth: 280
+        });
+    });
+
+    // Add features to the map
+    map.markerLayer.setGeoJSON(Cardiff);
+
+// #############################################################################################################    
+    
+    // Declare new variable for hover popups
+    var popup = new L.Popup({ autoPan: false });
+
+    // Add interactive layer using countries.js (countryData is declared in file)
+    var countryLayer = L.geoJson(countryData,  {
+        style: getStyle,
+        onEachFeature: onEachFeature
+    }).addTo(map);
+
+    // Style interactive layer when inactive
+    function getStyle(feature) {
+        return {
+            weight: 1,
+            opacity: 0,
+            color: 'black',
+            fillOpacity: 0
+        };
+    }
+
+    // Invoke actions when mouse is in bounds
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mousemove: mousemove,
+            mouseout: mouseout,
+            click: zoomToFeature
+        });
+    }
+
+    var closeTooltip;
+
+    function mousemove(e) {
+        var layer = e.target;
+
+        // Displays country name pulled from countries.js in popup
+        popup.setLatLng(e.latlng);
+        popup.setContent('<h2>' + layer.feature.properties.name + '</h2>' +'Statistics go here');
+
+        // Ensures popup does not timeout
+        if (!popup._map) popup.openOn(map);
+        window.clearTimeout(closeTooltip);
+
+        // Styles layer when activated by mouse
+        layer.setStyle({
+            weight: 2,
+            opacity: 0.3,
+            fillOpacity: 0.2
+        });
+
+        // Compatability scripts for Opera and IE
+        if (!L.Browser.ie && !L.Browser.opera) {
+            layer.bringToFront();
+        }
+    }
+
+    // Resets layer to default when mouse is moved out of bounds
+    function mouseout(e) {
+        countryLayer.resetStyle(e.target);
+        closeTooltip = window.setTimeout(function() {
+            map.closePopup();
+        }, 50);
+    }
+
+    // Ensures zoom on click works
+    function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+    }
+
+    // Add footer to map to highlight data sources and copyright
+    map.attributionControl.addAttribution('Cardiff University | Powered by <a href="http://www.mapbox.com">Mapbox </a>| Data courtesy of &copy <a href="http://naturalearthdata.com">Natural Earth Project</a>');
+
+  </script>
+
+</body>
+
+</html>
