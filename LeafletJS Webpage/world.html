@@ -23,6 +23,13 @@
 	    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
 	<![endif]-->
 
+	<!-- Detects if browser is IE 6 and displays popup warning of potential bugs -->
+	<!--[if IE 6]>
+	<script language="JavaScript">
+		alert: ("Parts of this webpage may not load correctly in the browser that you are using. To enable full functionality of this page, please use a different browser.")
+	</script>
+	<![endif]-->
+
 	<!-- Style map and legend using CSS -->
 	<style>
 		#map {
@@ -95,6 +102,14 @@
 		
 		// Add custom attributes to map to abide by OpenStreetMap conditions
 		map.attributionControl.setPrefix('Cardiff University | Powered by <a href="http//leafletjs.com">Leaflet</a>');
+
+		// Add marker to highlight location of Cardiff University
+		var marker = L.marker([51.487275, -3.175241])
+			.bindPopup(
+				'<h4>Cardiff University</h4>'
+			);
+
+		marker.addTo(map);
 
 		// Create div when hovering over country
 		var info = L.control();
