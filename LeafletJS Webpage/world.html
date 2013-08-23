@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<meta charset = "UTF-8">
+
+<!-- ###############################################################################################################
+                            Cardiff University - International Relations Interactive Map
+                                    Author: Tomas James, Prof. Walter Gear
+                                      School of Physics and Astronomy
+
+    	Based on examples and documentation from http://leafletjs.com/examples/choropleth.html and http://leafletjscom/reference.html. 
+
+                  Bugs should be reported to jamest7@cardiff.ac.uk with email heading 'Mapping Bug'
+ ################################################################################################################ -->
+
+<head>
+	<!-- Declare meta data for map to load smoothly -->  
+	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
+
+	<!-- Import Leaflet JavaScript library and stylesheets for map -->
+	<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+	<!--[if lte IE 8]>
+	    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+	<![endif]-->
+
+	<!-- Style map and legend using CSS -->
+	<style>
+		#map {
+			position:absolute; 
+		    top:0; 
+		    bottom:0; 
+		    width:100%;
+		}
+
+		.info {
+			padding: 6px 8px;
+			font: 14px/16px Arial, Helvetica, sans-serif;
+			background: white;
+			background: rgba(255,255,255,0.8);
+			box-shadow: 0 0 15px rgba(0,0,0,0.2);
+			border-radius: 5px;
+		}
+
+		.info h4 {
+			margin: 0 0 5px;
+			color: #777;
+		}
+
+		.legend {
+			text-align: left;
+			line-height: 18px;
+			color: #555;
+		}
+		.legend i {
+			width: 18px;
+			height: 18px;
+			float: left;
+			margin-right: 8px;
+			opacity: 0.7;
+		}
+	</style>
+</head>
+
+<!-- ########################################################################################################## --> 
+
+<body>
+
+	<!-- Declare map as div in html page -->
+	<div id="map"></div>
+
+	<!-- Import countryData for interactive layer -->
+	<script type="text/javascript" src="countryData.min.js"></script>
+	
+	<!-- Declare JavaScript to begin map -->
+	<script type="text/javascript">
+
+		// Initialise Leaflet map
+		var map = L.map('map');
+
+		// Set boundary conditions and initialise
+		var southWest = new L.LatLng(-60.7697, -172.5722, true);
+		var northEast = new L.LatLng(84.6715 , 191.6464, true);
+
+		var bounds = new L.LatLngBounds(southWest, northEast);
+			map.setMaxBounds(bounds);
+
+		// Load OpenStreetMap hosted map and set attributes
+		var osmTile = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
+		var attribution = "Map data &copy; 2012 OpenStreetMap";
+		var osmLayer = new L.TileLayer(osmTile, { maxZoom: 5, minZoom: 1, attribution: attribution });
+		
+		// Initialise above map and set center point and zoom
+		map.addLayer(osmLayer);
+		map.setView(new L.LatLng(51.487275, -3.175241), 2);
+		
+		// Add custom attributes to map to abide by OpenStreetMap conditions
+		map.attributionControl.setPrefix('Cardiff University | Powered by <a href="http//leafletjs.com">Leaflet</a>');
+
+		// Create div when hovering over country
+		var info = L.control();
+
+		info.onAdd = function (map) {
+			this._div = L.DomUtil.create('div', 'info');
+			this.update();
+			return this._div;
+		};
+
+		// Fill div with country name from countryData.min.js
+		info.update = function (props) {
+			this._div.innerHTML = '<h4>Country</h4>' +  (props ?
+				'<b>' + props.name + '</b>'
+				: 'Hover over a country');
+		};
+
+		// Add above to map
+		info.addTo(map);
+
+		// Style interactive layer by default
+		function style(feature) {
+			return {
+				weight: 2,
+				opacity: 0,
+				color: 'white',
+				fillOpacity: 0
+			};
+		}
+
+		// Style intractive layer when mouse enters bounds
+		function highlightFeature(e) {
+			var layer = e.target;
+
+			layer.setStyle({
+				weight: 5,
+				color: '#666',
+				dashArray: '2',
+				fillOpacity: 0.7
+			});
+
+			// IE and Opera compatability scripts
+			if (!L.Browser.ie && !L.Browser.opera) {
+				layer.bringToFront();
+			}
+
+			info.update(layer.feature.properties);
+		}
+
+
+		function resetHighlight(e) {
+			geojson.resetStyle(e.target);
+			info.update();
+		}
+
+		// Allow click of country to zoom to feature
+		function zoomToFeature(e) {
+			map.fitBounds(e.target.getBounds());
+		}
+
+		// Assigns mouse behaviour to specific actions declared above
+		function onEachFeature(feature, layer) {
+			layer.on({
+				mouseover: highlightFeature,
+				mouseout: resetHighlight,
+				click: zoomToFeature
+			});
+		}
+
+		// Allows country names from countryData to display
+		var geojson = L.geoJson(countryData, {
+			style: style,
+			onEachFeature: onEachFeature
+		}).addTo(map);
+
+	</script>
+</body>
+
+</html>
