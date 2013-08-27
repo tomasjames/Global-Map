@@ -19,6 +19,11 @@ the SVG and interactive layer graphics though it still performs amicably under m
 usable throughout. ActiveX controls run through Internet Explorer and these systems will initially block the 
 JavaScript content. 
 
+LeafletJS also has one major advantage over Mapbox.js: it is mobile enabled. Whilst http://www.cardiff.ac.uk does not
+have a mobile optimised site at the moment, the LeafletJS map will still work when the mobile optimised web pages
+are rolled out. Some elements of the map - the hover functions in particular - may not work well on mobile devices. If 
+this is the case further investigation will be required to find an alternative method of disseminating the information.
+
 ## Data
 
 Data was collected using a survey that was sent electronically to all academics (excluding post doctoral researchers 
