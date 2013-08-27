@@ -48,23 +48,18 @@
 			border-radius: 5px;
 		}
 
-		.info h4 {
+		h4 {
 			margin: 0 0 5px;
 			color: #777;
 		}
 
-		.legend {
-			text-align: left;
-			line-height: 18px;
-			color: #555;
-		}
-		.legend i {
-			width: 18px;
-			height: 18px;
-			float: left;
-			margin-right: 8px;
-			opacity: 0.7;
-		}
+		.leaflet-popup-close-button {
+            display: none;
+        }
+        .leaflet-popup-content-wrapper {
+            pointer-events: none;
+        }
+
 	</style>
 </head>
 
@@ -76,7 +71,7 @@
 	<div id="map"></div>
 
 	<!-- Import countryData for interactive layer -->
-	<script type="text/javascript" src="countryData.min.js"></script>
+	<script type="text/javascript" src="countriesSmall.js"></script>
 	
 	<!-- Declare JavaScript to begin map -->
 	<script type="text/javascript">
@@ -103,8 +98,21 @@
 		// Add custom attributes to map to abide by OpenStreetMap conditions
 		map.attributionControl.setPrefix('Cardiff University | Powered by <a href="http//leafletjs.com">Leaflet</a>');
 
+		// Import custom marker
+		/*var cardiffIcon = L.icon({
+			iconUrl: 'marker.png',
+			//shadowUrl: 'markerShadow.png',
+
+			iconSize: [22.5, 42.5],
+			//shadowSize: [50, 55],
+
+			iconAnchor: [9, 49],
+			//shadowAnchor: [22, 94],
+			popupAnchor: [-3, -76],
+		});*/
+
 		// Add marker to highlight location of Cardiff University
-		var marker = L.marker([51.487275, -3.175241])
+		var marker = L.marker([51.487275, -3.175241]/*, {icon: cardiffIcon}*/)
 			.bindPopup(
 				'<h4>Cardiff University</h4>'
 			);
@@ -120,10 +128,10 @@
 			return this._div;
 		};
 
-		// Fill div with country name from countryData.min.js
+		// Fill div with country name from countryData.min.js and stats from external source
 		info.update = function (props) {
 			this._div.innerHTML = '<h4>Country</h4>' +  (props ?
-				'<b>' + props.name + '</b>'
+				'<b>' + props.name + '</b><br>Total Alumni: ' + props.alumni + '</b><br>Total Staff: ' + props.staff + '</b>'
 				: 'Hover over a country');
 		};
 
