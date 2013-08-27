@@ -43,7 +43,7 @@ To save time these could be hosted on the home server as both libraries are ligh
 
 Through testing it was found that mapbox.js did not run well on any version of Internet Explorer. It ran a somewhat 
 better experience under Firefox though lag was present when loading interactive layers. WebKit browsers (Google
-Chrome, Safari, Opera etc) handled this application the best.
+Chrome, Safari, Opera etc) handled this application in the most consistent manner.
 
 All browsers tested ran the LeafletJS map with only small problems in Firefox (namely a slight lag if the countriesSmall.js
 file is fairly large). Internet Explorer 7 through 9 blocked the JavaScript content under an ActiveX warning. Dismissing this
