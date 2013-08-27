@@ -1,5 +1,7 @@
 # Global Mapping Applications
 
+![Screenshot of Map using LeafletJS under Google Chrome in OS X](Map/Screenshot.png)
+
 This repository contains two folders: Mapbox.js Webpage and LeafletJS webpage. 
 They both produce an interactive map of the world using different JavaScript libraries and mapping providers,
 though they are all based on the D3.js similar JavaScript techniques.
