@@ -23,10 +23,14 @@
 	    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
 	<![endif]-->
 
+	<!-- Import search plugin -->
+	<script src="Plugins/leaflet-search.js"></script>
+	<link rel="stylesheet" href="Plugins/leaflet-search.css">
+
 	<!-- Detects if browser is IE 6 and displays popup warning of potential bugs -->
 	<!--[if IE 6]>
 	<script language="JavaScript">
-		alert: ("Parts of this webpage may not load correctly in the browser that you are using. To enable full functionality of this page, please use a different browser.")
+		alert: ("Parts of this webpage may not load correctly in the browser that you are using. To enable the full functionality of this page, please use a different browser.")
 	</script>
 	<![endif]-->
 
@@ -88,7 +92,7 @@
 
 		// Load OpenStreetMap hosted map and set attributes
 		var osmTile = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
-		var attribution = "Map data &copy; 2012 OpenStreetMap";
+		var attribution = "Map data &copy; 2012 OpenStreetMap ";
 		var osmLayer = new L.TileLayer(osmTile, { maxZoom: 5, minZoom: 1, attribution: attribution });
 		
 		// Initialise above map and set center point and zoom
@@ -112,7 +116,7 @@
 		});*/
 
 		// Add marker to highlight location of Cardiff University
-		var marker = L.marker([51.487275, -3.175241]/*, {icon: cardiffIcon}*/)
+		var marker = L.marker([51.487275, -3.175241])
 			.bindPopup(
 				'<h4>Cardiff University</h4>'
 			);
@@ -192,6 +196,32 @@
 			style: style,
 			onEachFeature: onEachFeature
 		}).addTo(map);
+
+		// Initialise search button to search interactive layer for country
+		var searchControl = new L.Control.Search({layer: geojson, propertyName: 'name', circleLocation: false});
+
+		// Define action when search location is found
+		searchControl.on('search_locationfound', function(e) {
+		
+		// Highlights search result 
+		e.layer.setStyle({
+			fillColor: '#D3374A',
+			fillOpacity: '0.7', 
+			color: '#000000',
+			opacity: '0.3'
+		});
+
+		// Define action when search location is collapsed
+		}).on('search_collapsed', function(e) {
+
+		// Return country to its original state
+		featuresLayer.eachLayer(function(layer) {
+			featuresLayer.resetStyle(layer);
+			});	
+		});
+	
+		// Add search to map
+		map.addControl(searchControl);
 
 	</script>
 </body>
