@@ -55,8 +55,18 @@ file is fairly large). Internet Explorer 7 through 9 blocked the JavaScript cont
 warning loaded the map and it's interactive layer perfectly.
 
 Internet Explorer 6 was more of a problem. All code used is supposedly compatible with IE 6 however it exhibits erratic
-behaviour on occasions. Internet Explorer 6 is stated as being unsupported in LeafletJS documentation however it has been
+behaviour on occasions. Internet Explorer 6 is stated as being unsupported in LeafletJS documentation. It has been
 reported to have been working under some circumstances.
+
+## Search Functionality (Only in Leaflet)
+
+LeafletJS has a rich library of plugins available. One such plugin that has been implemented here is the 'leaflet-search' plugin. 
+This allows the user to interact with a search bar within the map itself, drawing suggestions (for example typing 'a' will provoke 
+suggestions from the data source as to countries beginning with a). 
+
+At the moment the plugin does not recognise all country names stored within the data source file 
+(countiesSmall.js or countriesSmall.min.js). This could be due to a problem in the format of the data source,
+though it will be investigated and fixed shortly.
 
 ## What To Do When Things Go Wrong
 
@@ -66,4 +76,11 @@ minor bugs may fall through the cracks, at which point further action may need t
 This ReadMe has been written to help administrators familiarise themselves with the code. Should you not be able
 to find the source of the problem please email jamest7@cardiff.ac.uk with a description of the problem, your operating
 system and browser along with screenshots (if possible).
+
+## To-Do List
+
+- troubleshoot leaflet-search plugin to determine problem with erratic search
+- investigate queries in Alumni data
+- potential markerbounce implementation?
+- format legend with table and Cardiff identity fonts
 
