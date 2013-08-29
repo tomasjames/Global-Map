@@ -48,3 +48,7 @@ To allow LeafletJS to pull this data in the following code is required:
 ![Interactive Layer Code](Snippets/Interactive1.png)
 ![Interactive Layer Code](Snippets/Interactive2.png)
 
+Each function invokes a specific action. For example the function highlightFeature will execute a small piece of code to change the colour of the region the mouse is hovering over. 
+
+The function info.update is responsible for creating the text inside the div with id info. This text is pulled in from countriesSmall.js. For example info.update looks for an attribute 'name' in countriesSmall.js and pulls the corresponding country name into the field 'name'. This is also true for the alumni and staff data sets.
+
