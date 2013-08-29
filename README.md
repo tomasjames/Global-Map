@@ -1,69 +1,53 @@
-# Global Mapping Applications
+## Global Mapping Applications for Cardiff University
 
-![Screenshot of Map using LeafletJS under Google Chrome in OS X](Map Screenshot.png)
+The aim of this project was to create a webpage through which potential international students to Cardiff University could learn more about the university's connections with their home country in an interactive and modern manner. 
 
-This repository contains two folders: Mapbox.js Webpage and LeafletJS webpage. 
-They both produce an interactive map of the world using different JavaScript libraries and mapping providers,
-though they are all based around similar JavaScript techniques and practices.
+The project also served as a method of gathering nationality and collaborative research data for the university's academics to help highlight potential links and trends between Cardiff and other universities/institutes or countries around the world. 
 
-Neither script uses HTML5 or CSS3 (or any other bleeding edge language for that matter) to ensure compatibility
-with older, now deprecated browsers.
+###  The Map
 
-## Differences
+It was decided that the best way to disseminate information was to produce an interactive map, through which a user could explore an atlas style map of the Earth. Hovering over a country would pull in data about the number of staff currently working at Cardiff as well as the total number of Alumni that have studied at Cardiff in the past. 
 
-The main differences are the JavaScript libraries used to create the map in both cases. Mapbox.js uses mapbox.js and 
-LeafletJS uses Leaflet.js. The former runs well under WebKit browsers but falls short under Firefox or IE. 
+A similar idea has been implemented by Oxford University (http://www.ox.ac.uk/international/oxford_around_the_globe/). This method works well and is an efficient method of data dissemination, but is not particularly user friendly or quick to use.
 
-The latter however works under all browsers. Some versions of Internet Explorer have difficulty in rendering 
-the SVG and interactive layer graphics though it still performs amicably under most circumstances and remains
-usable throughout. ActiveX controls run through Internet Explorer and these systems will initially block the 
-JavaScript content. 
-
-LeafletJS also has one major advantage over Mapbox.js: it is mobile enabled. Whilst http://www.cardiff.ac.uk does not
-have a mobile optimised site at the moment, the LeafletJS map will still work when the mobile optimised web pages
-are rolled out. Some elements of the map - the hover functions in particular - may not work well on mobile devices. If 
-this is the case further investigation will be required to find an alternative method of disseminating the information.
-
-## Data
+### Data
 
 Data was collected using a survey that was sent electronically to all academics (excluding post doctoral researchers 
-and post graduate students) with the aim of surveying the nationalities of Cardiff University's academic staff. It
-was also used to obtain data on the number of worldwide collaborative research projects that links Cardiff to other
-universities around the world. 
+and post graduate students). 
 
-Alumni data was also used to showcase the university's links with undergraduate students from countries across
-the globe. This is data valid for academic year 2011/2012 but can be updated to bring it up to speed each year if
-necessary. This process is not user friendly and is time consuming in it's present form (manually altering the
-JavaScript file containing all of the coordinates). This method will be investigated once all primary work
-is complete to determine whether a more user friendly update method can be found.
+Alumni data was obtained from the Alumni Office. This Alumni data is valid for academic year 2011/2012 but can be updated to bring it up to speed each year if necessary. This process is not user friendly and is time consuming in it's present form (manually altering the JavaScript file containing all of the coordinates). Efforts to streamline this process will occur in due course.
 
-## Compatibility
+###  Code
 
-These maps were designed around a worldwide user base and as such the possibility of users using older operating
-systems (Windows XP for example) that do not support the newest browsers or languages had to be considered. As such
-these maps do not use HTML5, or CSS3 (as mentioned above).
+The code to produce the map has been written in HTML, CSS and JavaScript. The main language that produces the map is JavaScript. Care was taken when writing the applet to ensure that it remained as usable and consistent across as many browsers as possible. The user base for the entire web page was assumed to be global, so neglecting older - now deprecated browsers - would have limited the page's reach.
 
-Both JavaScript libraries (Leaflet and Mapbox) are external and are loaded into the document from an external source.
-To save time these could be hosted on the home server as both libraries are lightweight and single document. 
+A JavaScript library called LeafletJS was used to produce the map. This library is free to use and is lightweight, meaning it requires very little space to store the files on a server. 
 
-Through testing it was found that mapbox.js did not run well on any version of Internet Explorer. It ran a somewhat 
-better experience under Firefox though lag was present when loading interactive layers. WebKit browsers (Google
-Chrome, Safari, Opera etc) handled this application in the most consistent manner.
+#### Creating the Map
 
-All browsers tested ran the LeafletJS map with only small problems in Firefox (namely a slight lag if the countriesSmall.js
-file is fairly large). Internet Explorer 7 through 9 blocked the JavaScript content under an ActiveX warning. Dismissing this
-warning loaded the map and it's interactive layer perfectly.
+The map itself is produces using a series of interlocking tiles. There are several providers of these services on the web however this 'pilot' applet uses an open source variety called OpenStreetMap. LeafletJS itself has excellent support for custom mapping tiles, so a map designed around the university's aesthetic and principles could be used to replace the detailed OpenStreetMap version used here. Instructions on how to do something similar to this can be found at the following web address: http://omarriott.com/aux/leaflet-js-non-geographical-imagery/.
 
-Internet Explorer 6 was more of a problem. All code used is supposedly compatible with IE 6 however it exhibits erratic
-behaviour on occasions. Internet Explorer 6 is stated as being unsupported in LeafletJS documentation however it has been
-reported to have been working under some circumstances.
+The map itself is initialised using the following piece of code:
 
-## What To Do When Things Go Wrong
+![Initialising Map](/Users/tomasjames/GitHub Repositories/Global-Map/Snippets/Initialise.png)
 
-Every effort has been made to test these applications under a wide variety of browsers and ecosystems. Inevitably 
-minor bugs may fall through the cracks, at which point further action may need to be taken. 
+The necessary import scripts are found in this piece of code:
 
-This ReadMe has been written to help administrators familiarise themselves with the code. Should you not be able
-to find the source of the problem please email jamest7@cardiff.ac.uk with a description of the problem, your operating
-system and browser along with screenshots (if possible).
+![Import Scripts](/Users/tomasjames/GitHub Repositories/Global-Map/Snippets/Import.png)
 
+**Any code prepended with an 'L.' is JavaScript from the LeafletJS library.** In this case L.map('map') creates a map inside the class 'map' (in this case the class map is attached to a div. Attaching the map to a div allows the map to be resized and styled using css under #map {} etc).
+
+This allows LeafletJS to build a map using tiles defined in osmTile. The variable osmLayer defines the maximum and minimum zoom conditions that the user can move to. The reason for this is that the interactive layer only works within one instance of the map, and zooming out such that more than one instance of the map is visible created confusion as to which was area was 'active'.
+
+#### Interactive Layer
+
+The interactive layer uses openly available coordinate and boundary data from http://www.naturalearthdata.com. This is stored in a .js file, along with country names and the data collected previously (alumni and staff numbers). 
+
+To allow LeafletJS to pull this data in the following code is required:
+
+![Interactive Layer Code](/Users/tomasjames/GitHub Repositories/Global-Map/Snippets/Interactive1.png)
+![Interactive Layer Code](/Users/tomasjames/GitHub Repositories/Global-Map/Snippets/Interactive2.png)
+
+Each 'action' has its own function. For example when the mouse enters the bounds of country x, the function 'highlightFeature' fires and executes the correct actions (in this case changing the colour and pulling data from another function info.update). 
+
+The info.update function is what produces the text inside div in the top right of the map that changes depending on the location of the mouse. This function simply looks for an attribute 'name' in countriesSmall.js and pulls that in for whatever country the mouse is hovering over. Similarly the function also pulls in the alumni and staff statistics as well and displays them in the div. 
