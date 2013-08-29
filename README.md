@@ -1,5 +1,7 @@
 ## Global Mapping Applications for Cardiff University
 
+![Example of LeafletJS Map in Chrome under OS X](Snippets/Map Screenshot.png)
+
 The aim of this project was to create a webpage through which potential international students to Cardiff University could learn more about the university's connections with their home country in an interactive and modern manner. 
 
 The project also served as a method of gathering nationality and collaborative research data for the university's academics to help highlight potential links and trends between Cardiff and other universities/institutes or countries around the world. 
