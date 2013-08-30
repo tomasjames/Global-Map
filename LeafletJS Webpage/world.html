@@ -9,6 +9,7 @@
 
     	Based on examples and documentation from http://leafletjs.com/examples/choropleth.html and http://leafletjscom/reference.html. 
 
+                  Bugs should be reported to jamest7@cardiff.ac.uk with email heading 'Mapping Bug'
  ################################################################################################################ -->
 
 <head>
@@ -16,10 +17,10 @@
 	<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no'>
 
 	<!-- Import Leaflet JavaScript library and stylesheets for map -->
-	<script src="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.js"></script>
-	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.css" />
+	<script src="leaflet-0.6.4/leaflet.js"></script>
+	<link rel="stylesheet" href="leaflet-0.6.4/leaflet.css" />
 	<!--[if lte IE 8]>
-	    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.6.4/leaflet.ie.css" />
+	    <link rel="stylesheet" href="leaflet-0.6.4/leaflet.ie.css" />
 	<![endif]-->
 
 	<!-- Import search plugin -->
@@ -39,10 +40,10 @@
 	<!-- Style map and legend using CSS -->
 	<style>
 		#map {
-		    	position:absolute; 
-		    	top:0; 
-		    	bottom:0; 
-		    	width:100%;
+			position:absolute; 
+		    top:0; 
+		    bottom:0; 
+		    width:100%;
 		}
 
 		.info {
@@ -65,12 +66,11 @@
 		}
 
 		.leaflet-popup-close-button {
-            		display: none;
-		}
-		
-        	.leaflet-popup-content-wrapper {
-            		pointer-events: none;
-        	}
+            display: none;
+        }
+        .leaflet-popup-content-wrapper {
+            pointer-events: none;
+        }
 
 	</style>
 </head>
@@ -259,10 +259,7 @@
 		// Add search to map
 		map.addControl(searchControl);
 		*/
-<<<<<<< HEAD
 
-=======
->>>>>>> 70fa399723e90bea5381f410ee94db9f97d50e08
 	</script>
 
 </body>
