@@ -34,6 +34,9 @@
 	</script>
 	<![endif]-->
 
+	<!-- Import jQuery -- >
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 	<!-- Style map and legend using CSS -->
 	<style>
 		#map {
@@ -85,8 +88,17 @@
 	<!-- Declare JavaScript to begin map -->
 	<script type="text/javascript">
 
+		// Load OpenStreetMap hosted map and set attributes
+		var osmTile = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
+		var attribution = "Map data &copy; 2012 OpenStreetMap ";
+		var osmLayer = new L.TileLayer(osmTile, { maxZoom: 5, minZoom: 1, attribution: attribution });
+
 		// Initialise Leaflet map
-		var map = L.map('map');
+		var map = L.map('map',{
+			center: new L.LatLng(51.487275, -3.175241),
+			zoom: 2,
+			//layers: [osmLayer, links]
+		});
 
 		// Set boundary conditions and initialise
 		var southWest = new L.LatLng(-66.7697, -190.5722, true);
@@ -94,41 +106,58 @@
 
 		var bounds = new L.LatLngBounds(southWest, northEast);
 			map.setMaxBounds(bounds);
-
-
-		// Load OpenStreetMap hosted map and set attributes
-		var osmTile = "http://tile.openstreetmap.org/{z}/{x}/{y}.png";
-		var attribution = "Map data &copy; 2012 OpenStreetMap ";
-		var osmLayer = new L.TileLayer(osmTile, { maxZoom: 5, minZoom: 1, attribution: attribution });
 		
 		// Initialise above map and set center point and zoom
-		map.addLayer(osmLayer);
-		map.setView(new L.LatLng(51.487275, -3.175241), 2);
+			map.addLayer(osmLayer);
 		
 		// Add custom attributes to map to abide by OpenStreetMap conditions
 		map.attributionControl.setPrefix('Cardiff University | Powered by <a href="http//leafletjs.com">Leaflet</a>');
 
-		// Import custom marker
-		/*var cardiffIcon = L.icon({
-			iconUrl: 'marker.png',
-			//shadowUrl: 'markerShadow.png',
-
-			iconSize: [22.5, 42.5],
-			//shadowSize: [50, 55],
-
-			iconAnchor: [9, 49],
-			//shadowAnchor: [22, 94],
-			popupAnchor: [-3, -76],
-		});*/
-
 		// Add marker to highlight location of Cardiff University
-		var marker = L.marker([51.487275, -3.175241])
+		var cardiff = L.marker([51.487275, -3.175241])
 			.bindPopup(
 				'<h4>Cardiff University</h4>'
 			);
 
-		marker.addTo(map);
+		// Initiate marker by default
+		cardiff.addTo(map);
 
+		// Declare variables for top 20 linked universities
+		var leuven = L.marker([50.877954, 4.700294]).bindPopup('<h4>KU Leuven</h4>');
+		var trinity = L.marker([53.343747, -6.254759]).bindPopup('<h4>Trinity College Dublin</h4>');
+		var eth = L.marker([47.377545, 8.547879]).bindPopup('<h4>ETH Zurich</h4>');
+		var lund = L.marker([55.712205, 13.202456]).bindPopup('<h4>Lund University</h4>');
+		var monash = L.marker([-37.876823, 145.045837]).bindPopup('<h4>Monash University</h4>');
+		var amsterdam = L.marker([52.357046, 4.950124]).bindPopup('<h4>University of Amsterdam</h4>');
+		var ghent = L.marker([51.052976, 3.720312]).bindPopup('<h4>Ghent University</h4>');
+		var harvard = L.marker([42.374189, -71.116588]).bindPopup('<h4>Harvard University</h4>');
+		var melbourne = L.marker([-37.824720, 144.970166]).bindPopup('<h4>University of Melbourne</h4>');
+		var aarhus = L.marker([56.170223, 10.200020]).bindPopup('<h4>Aarhus University</h4>');
+		var leiden = L.marker([52.157493, 4.483056]).bindPopup('<h4>Leiden University</h4>');
+		var utrecht = L.marker([52.094189, 5.123688]).bindPopup('<h4>Utrecht University</h4>');
+		var stanford = L.marker([37.427475, -122.169719]).bindPopup('<h4>Stanford University</h4>');
+		var mit = L.marker([42.358867, -71.093825]).bindPopup('<h4>Massachusetts Institute of Technology</h4>');
+		var tsinghua = L.marker([40.001244, 116.328484]).bindPopup('<h4>Tsinghau University</h4>');
+		var copenhagen = L.marker([55.680179, 12.540722]).bindPopup('<h4>University of Copenhagen</h4>');
+		var sydney = L.marker([-33.889913, 151.190560]).bindPopup('<h4>University of Sydney</h4>');
+		var columbia = L.marker([40.807536, -73.962573]).bindPopup('<h4>Columbia University</h4>');
+		var karolinska = L.marker([59.347997, 18.026251]).bindPopup('<h4>Karolinska Institute</h4>');
+		var british = L.marker([49.264840, -123.252605]).bindPopup('<h4>University of British Columbia</h4>');
+
+		// Load above variables into array and add to map
+		var links = new L.LayerGroup([leuven, trinity, eth, lund, monash, amsterdam, ghent, harvard, melbourne,
+			aarhus, leiden, utrecht, stanford, mit, tsinghua, copenhagen, sydney, columbia, karolinska, british]);
+
+		// Parse overlay data for toggle layer control
+		var overlayMaps = {
+			"Top 20": links,
+			"Cardiff": cardiff
+		};
+
+		// Initiate layer control and place menu in top left corner of map
+		L.control.layers(null, overlayMaps, {position: 'topleft'}).addTo(map);
+
+		
 		// Create div when hovering over country
 		var info = L.control();
 
@@ -141,7 +170,7 @@
 		// Fill div with country name from countryData.min.js and stats from external source
 		info.update = function (props) {
 			this._div.innerHTML = '<h4>Country</h4>' +  (props ?
-				'<b>' + props.name + '</b><br>Total Staff: ' + props.staff + '</b><br>Total Alumni: ' + props.alumni + '</b>'
+				'<b>' + props.name + '</b><br>Total Staff: ' + props.staff + '</b><br>Total Alumni: ' + props.alumni + '</b><br>Research Links: ' + props.links + '</b>'
 				: 'Hover over a country');
 		};
 
@@ -198,11 +227,12 @@
 		}
 
 		// Allows country names from countryData to display
-		var geojson = L.geoJson(countryData, {
+		var geojson = new L.GeoJSON(countryData, {
 			style: style,
 			onEachFeature: onEachFeature
 		}).addTo(map);
 
+		/*
 		// Initialise search button to search interactive layer for country
 		var searchControl = new L.Control.Search({layer: geojson, propertyName: 'name', text: 'Country name...', circleLocation: false});
 
@@ -228,6 +258,7 @@
 	
 		// Add search to map
 		map.addControl(searchControl);
+		*/
 
 	</script>
 
