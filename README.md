@@ -50,5 +50,21 @@ To allow LeafletJS to pull this data in the following code is required:
 
 Each function invokes a specific action. For example the function highlightFeature will execute a small piece of code to change the colour of the region the mouse is hovering over. 
 
-The function info.update is responsible for creating the text inside the div with id info. This text is pulled in from countriesSmall.js. For example info.update looks for an attribute 'name' in countriesSmall.js and pulls the corresponding country name into the field 'name'. This is also true for the alumni and staff data sets.
+The function info.update is responsible for creating the text inside the div with id info. This text is pulled in from countriesSmall.js. The function info.update looks for an attribute 'name' in countriesSmall.js and pulls the corresponding country name into the div. This is also true for the alumni and staff data sets.
+
+#### Search Functionality
+
+The power of LeafletJS comes from it's extensible plugin library. One such plugin was implemented here. 
+
+Leaflet-search allows the user to search for a country name, at which point suggestions are generated based on the user's input. When selecting a country in the search box and hitting enter/clicking confirm, the map pans to the country in question and highlights in a given colour. 
+
+Much like the interactive layer this search is populated using the contents of countriesSmall.js. At the moment however the search recognizes some, but not all of the countries in this JavaScript file. Linting the JavaScript in both world.html and countriesSmall.js returns no obvious errors. This issue has been noted as a bug and will be fixed promptly.
+
+### Mapbox.js
+
+The other JavaScript library that was tested was Mapbox.js. It is built around LeafletJS and uses similar techniques, though it has a few disadvantages.
+
+The first is compatability. Whereas LeafletJS works comfortably in most browsers, Mapbox.js struggles under Firefox and IE, despite compatability scripts being present. Moreover this library does not have support (or, not as expansive support) for custom mapping tiles like LeafletJS does. This meant that premium, pay-per-view mapping services would be required for any significant level of traffic.
+
+On the other hand, Mapbox.js is slightly more extensible when it comes to popup customizability. It also integrates extremely well with premium mapping services.
 
